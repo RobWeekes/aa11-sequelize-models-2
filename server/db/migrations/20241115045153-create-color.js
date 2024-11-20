@@ -15,17 +15,18 @@ module.exports = {
       },
       isPrimary: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        default: Sequelize.literal("CURRENT_TIMESTAMP")
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        default: Sequelize.literal("CURRENT_TIMESTAMP")
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       }
     });
   },

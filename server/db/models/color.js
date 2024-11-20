@@ -17,19 +17,29 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
-    },
-    isPrimary: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
+      unique: true,
       validate: {
-        threeColors(value) {
-          if(value !== 'red' && value !== 'blue' && value !== 'yellow') {
-            throw new Error('Value must be a primary color')
+        async isUnique(value) {
+          const existingColor = await Color.findOne({ where: { name: value } });
+          if (existingColor) {
+            throw new Error('Color name must be unique');
           }
         }
       }
     },
+    isPrimary: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      validate: {
+        isPrimaryColor(value) {
+          const primaryColors = ['Red', 'Blue', 'Yellow'];
+          if (this.name && value === true && !primaryColors.includes(this.name)) {
+            throw new Error('Only Red, Blue, and Yellow can be primary colors');
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Color',
